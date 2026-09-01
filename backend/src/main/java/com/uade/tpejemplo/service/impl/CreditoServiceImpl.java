@@ -34,7 +34,13 @@ public class CreditoServiceImpl implements CreditoService {
     public CreditoResponse crear(CreditoRequest request) {
         Cliente cliente = buscarCliente(request.getDniCliente());
 
-        Credito credito = creditoRepository.save(nuevoCredito(request, cliente));
+        Credito credito = creditoRepository.save(Credito.nuevo(
+            cliente,
+            request.getDeudaOriginal(),
+            request.getFecha(),
+            request.getImporteCuota(),
+            request.getCantidadCuotas()
+        ));
         List<Cuota> cuotas = cuotaRepository.saveAll(credito.generarPlanDeCuotas());
 
         return toResponse(credito, cuotas);
@@ -71,7 +77,7 @@ public class CreditoServiceImpl implements CreditoService {
             );
         }
 
-        credito.setAnulado(true);
+        credito.anular();
         creditoRepository.save(credito);
     }
 
@@ -83,19 +89,6 @@ public class CreditoServiceImpl implements CreditoService {
     private Credito buscarCredito(Long id) {
         return creditoRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Crédito", "id", id));
-    }
-
-    private Credito nuevoCredito(CreditoRequest request, Cliente cliente) {
-        return new Credito(
-            null,
-            cliente,
-            request.getDeudaOriginal(),
-            request.getFecha(),
-            request.getImporteCuota(),
-            request.getCantidadCuotas(),
-            null,
-            false
-        );
     }
 
     private CreditoResponse toResponse(Credito credito, List<Cuota> cuotas) {

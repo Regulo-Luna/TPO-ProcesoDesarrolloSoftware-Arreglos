@@ -3,8 +3,8 @@ package com.uade.tpejemplo.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -14,9 +14,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "creditos")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Credito {
 
     @Id
@@ -44,11 +43,33 @@ public class Credito {
     @Column(name = "cantidad_cuotas", nullable = false)
     private Integer cantidadCuotas;
 
+    /** Sin getter: la coleccion es interna y exponerla entregaria la lista mutable. */
+    @Getter(AccessLevel.NONE)
     @OneToMany(mappedBy = "credito", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Cuota> cuotas;
 
     @Column(name = "anulado", nullable = false)
     private boolean anulado = false;
+
+    private Credito(Cliente cliente, BigDecimal deudaOriginal, LocalDate fecha,
+                    BigDecimal importeCuota, Integer cantidadCuotas) {
+        this.cliente = cliente;
+        this.deudaOriginal = deudaOriginal;
+        this.fecha = fecha;
+        this.importeCuota = importeCuota;
+        this.cantidadCuotas = cantidadCuotas;
+        this.anulado = false;
+    }
+
+    /**
+     * Unica forma de dar de alta un credito. El id lo asigna la base y las
+     * cuotas las genera el propio credito, asi que ninguno de los dos se
+     * recibe desde afuera.
+     */
+    public static Credito nuevo(Cliente cliente, BigDecimal deudaOriginal, LocalDate fecha,
+                                BigDecimal importeCuota, Integer cantidadCuotas) {
+        return new Credito(cliente, deudaOriginal, fecha, importeCuota, cantidadCuotas);
+    }
 
     /**
      * Genera el plan de cuotas del credito: una cuota por cada periodo,
@@ -68,5 +89,9 @@ public class Credito {
             ));
         }
         return plan;
+    }
+
+    public void anular() {
+        this.anulado = true;
     }
 }

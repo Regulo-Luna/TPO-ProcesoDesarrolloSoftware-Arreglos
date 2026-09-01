@@ -39,13 +39,7 @@ public class CobranzaServiceImpl implements CobranzaService {
             );
         }
 
-        Cobranza cobranza = new Cobranza(
-            null,
-            cuota,
-            request.getImporte(),
-            LocalDate.now(),
-            false
-        );
+        Cobranza cobranza = Cobranza.registrar(cuota, request.getImporte());
         cobranzaRepository.save(cobranza);
         return CobranzaResponse.desde(cobranza);
     }
@@ -67,7 +61,7 @@ public class CobranzaServiceImpl implements CobranzaService {
             throw new BusinessException("Solo se pueden anular cobranzas del día de hoy.");
         }
 
-        cobranza.setAnulada(true);
+        cobranza.anular();
         cobranzaRepository.save(cobranza);
     }
 }

@@ -27,9 +27,7 @@ public class MetaCobranzaServiceImpl implements MetaCobranzaService {
     @Override
     @Transactional
     public MetaCobranzaRequest guardarMeta(MetaCobranzaRequest metaRequest) {
-        MetaCobranza meta = new MetaCobranza();
-        meta.setMes(metaRequest.getMes());
-        meta.setMontoObjetivo(metaRequest.getMontoObjetivo());
+        MetaCobranza meta = MetaCobranza.nueva(metaRequest.getMes(), metaRequest.getMontoObjetivo());
         return MetaCobranzaRequest.desde(metaCobranzaRepository.save(meta));
     }
 
@@ -38,8 +36,7 @@ public class MetaCobranzaServiceImpl implements MetaCobranzaService {
     public MetaCobranzaRequest actualizarMeta(Long id, MetaCobranzaRequest metaRequest) {
         MetaCobranza meta = buscarMeta(id);
 
-        meta.setMes(metaRequest.getMes());
-        meta.setMontoObjetivo(metaRequest.getMontoObjetivo());
+        meta.actualizar(metaRequest.getMes(), metaRequest.getMontoObjetivo());
 
         return MetaCobranzaRequest.desde(metaCobranzaRepository.save(meta));
     }

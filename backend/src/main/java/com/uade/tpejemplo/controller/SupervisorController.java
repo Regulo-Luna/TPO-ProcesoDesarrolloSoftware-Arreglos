@@ -47,8 +47,7 @@ public class SupervisorController {
         Usuario usuario = usuarioRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
             
-        usuario.setPuedeAnularCredito(request.isPuedeAnularCredito());
-        usuario.setPuedeAnularCobranza(request.isPuedeAnularCobranza());
+        usuario.otorgarPermisos(request.isPuedeAnularCredito(), request.isPuedeAnularCobranza());
         
         usuarioRepository.save(usuario);
         

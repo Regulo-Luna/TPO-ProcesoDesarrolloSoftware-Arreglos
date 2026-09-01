@@ -23,7 +23,7 @@ public class ClienteServiceImpl implements ClienteService {
         if (clienteRepository.existsByDni(request.getDni())) {
             throw new BusinessException("Ya existe un cliente con DNI: " + request.getDni());
         }
-        Cliente cliente = new Cliente(request.getDni(), request.getNombre(), null);
+        Cliente cliente = Cliente.nuevo(request.getDni(), request.getNombre());
         clienteRepository.save(cliente);
         return ClienteResponse.desde(cliente);
     }
