@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -48,4 +49,24 @@ public class Credito {
 
     @Column(name = "anulado", nullable = false)
     private boolean anulado = false;
+
+    /**
+     * Genera el plan de cuotas del credito: una cuota por cada periodo,
+     * numeradas desde 1 y con vencimiento mensual a partir de la fecha
+     * de otorgamiento.
+     *
+     * Es una regla del credito, no del caso de uso que lo da de alta:
+     * por eso vive en la entidad y no en el servicio.
+     */
+    public List<Cuota> generarPlanDeCuotas() {
+        List<Cuota> plan = new ArrayList<>();
+        for (int numeroCuota = 1; numeroCuota <= cantidadCuotas; numeroCuota++) {
+            plan.add(new Cuota(
+                new CuotaId(id, numeroCuota),
+                this,
+                fecha.plusMonths(numeroCuota)
+            ));
+        }
+        return plan;
+    }
 }

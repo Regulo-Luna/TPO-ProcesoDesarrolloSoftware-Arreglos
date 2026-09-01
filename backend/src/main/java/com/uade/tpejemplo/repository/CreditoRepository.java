@@ -14,7 +14,4 @@ public interface CreditoRepository extends JpaRepository<Credito, Long> {
 
     @Query("SELECT COALESCE(SUM(c.importeCuota), 0) FROM Credito c")
     Double sumMontoTotal();
-
-    @Query("SELECT COUNT(c) FROM Credito c")
-    Long countAll();
 }

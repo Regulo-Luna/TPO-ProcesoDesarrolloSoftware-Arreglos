@@ -1,5 +1,6 @@
 package com.uade.tpejemplo.dto.response;
 
+import com.uade.tpejemplo.model.Cliente;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -9,4 +10,8 @@ public class ClienteResponse {
 
     private String dni;
     private String nombre;
+
+    public static ClienteResponse desde(Cliente cliente) {
+        return new ClienteResponse(cliente.getDni(), cliente.getNombre());
+    }
 }

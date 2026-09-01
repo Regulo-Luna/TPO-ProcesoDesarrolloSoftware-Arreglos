@@ -25,24 +25,20 @@ public class ClienteServiceImpl implements ClienteService {
         }
         Cliente cliente = new Cliente(request.getDni(), request.getNombre(), null);
         clienteRepository.save(cliente);
-        return toResponse(cliente);
+        return ClienteResponse.desde(cliente);
     }
 
     @Override
     public ClienteResponse buscarPorDni(String dni) {
         Cliente cliente = clienteRepository.findByDni(dni)
             .orElseThrow(() -> new ResourceNotFoundException("Cliente", "DNI", dni));
-        return toResponse(cliente);
+        return ClienteResponse.desde(cliente);
     }
 
     @Override
     public List<ClienteResponse> listarTodos() {
         return clienteRepository.findAll().stream()
-            .map(this::toResponse)
+            .map(ClienteResponse::desde)
             .toList();
-    }
-
-    private ClienteResponse toResponse(Cliente cliente) {
-        return new ClienteResponse(cliente.getDni(), cliente.getNombre());
     }
 }
