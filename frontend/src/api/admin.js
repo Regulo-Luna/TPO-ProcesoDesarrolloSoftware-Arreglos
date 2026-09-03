@@ -1,4 +1,6 @@
 import { api } from './apiClient';
 
-export const getUsuarios = () => api.get('/admin/usuarios');
-export const updatePermisos = (id, permisos) => api.put(`/admin/usuarios/${id}/permisos`, permisos);
+export const updateRolUsuario = async (id, nuevoRol) => {
+  const response = await api.put(`/admin/usuarios/${id}/rol`, { rol: nuevoRol });
+  return response;
+};

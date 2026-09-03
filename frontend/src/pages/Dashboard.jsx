@@ -1,29 +1,34 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchEstadisticas } from '../store/slices/dashboardSlice'; // Ajusta la ruta si es necesario
+import { fetchEstadisticas } from '../store/slices/dashboardSlice'; 
 import MetaCobranza from './MetaCobranza';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   
-  // Extraemos la información del estado global de métricas
   const { data: estadisticas, loading, error } = useSelector((state) => state.dashboard);
-  
-  // NUEVO: Extraemos el usuario autenticado para saber su rol
   const { user } = useSelector((state) => state.auth);
-  const isAdmin = user?.rol === 'ADMIN';
+  
+  // Validamos el rol de SUPERVISOR en lugar de ADMIN
+  const isSupervisor = user?.rol === 'SUPERVISOR';
 
   useEffect(() => {
-    // Disparamos la acción para ir a buscar los datos apenas carga la pantalla
-    dispatch(fetchEstadisticas());
-  }, [dispatch]);
+    // Solo disparamos la petición si el usuario es supervisor
+    if (isSupervisor) {
+      dispatch(fetchEstadisticas());
+    }
+  }, [dispatch, isSupervisor]);
 
-  if (loading) return <div>Cargando métricas del sistema...</div>;
-  if (error) return <div style={{ color: 'red' }}>Error: {error}</div>;
+  if (!isSupervisor) return <div style={styles.center}>No tienes permisos para ver el dashboard.</div>;
+  if (loading) return <div style={styles.center}>Cargando métricas del sistema...</div>;
+  if (error) return <div style={styles.center}>Error: {error}</div>;
 
   return (
     <div style={styles.container}>
-      <h2>Panel de Estadísticas {isAdmin && <span style={styles.adminBadge}>(Modo Admin)</span>}</h2>
+      <h2>
+        Panel de Estadísticas 
+        <span style={styles.supervisorBadge}>(Modo Supervisor)</span>
+      </h2>
       
       <div style={styles.tarjetasMetricas}>
         <div style={styles.tarjeta}>
@@ -36,20 +41,18 @@ const Dashboard = () => {
         </div>
         <div style={styles.tarjeta}>
            <h3>Monto Total Financiado</h3>
-           <p style={styles.valor}>{estadisticas?.montoTotalFinanciado || 0}</p>
+           <p style={styles.valor}>${estadisticas?.montoTotalFinanciado || 0}</p>
         </div>
         <div style={styles.tarjeta}>
            <h3>Monto Total Cobrado</h3>
-           <p style={styles.valor}>{estadisticas?.montoTotalCobrado || 0}</p>
+           <p style={styles.valor}>${estadisticas?.montoTotalCobrado || 0}</p>
         </div>
       </div>
       
-        {/* Opcional: Si quieres que SOLO el admin vea las metas, envuélvelo en isAdmin && */}
-        {isAdmin && (
-          <div style={{ marginTop: '30px', width: '100%' }}>
-              <MetaCobranza />
-          </div>
-        )}
+      {/* Como el dashboard es exclusivo del supervisor, MetaCobranza se renderiza directo */}
+      <div style={{ marginTop: '30px', width: '100%' }}>
+          <MetaCobranza />
+      </div>
     </div>
   );
 };
@@ -68,12 +71,13 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     height: '100vh',
+    fontSize: '1.2rem'
   },
   tarjetasMetricas: {
     display: 'flex',
     gap: '20px',
     justifyContent: 'center',
-    flexWrap: 'wrap', // Agregado para que se acomoden bien en pantallas chicas
+    flexWrap: 'wrap',
   },
   tarjeta: {
     backgroundColor: 'white',
@@ -89,11 +93,10 @@ const styles = {
     color: '#007bff',
     margin: '10px 0 0 0',
   },
-  // NUEVO: Estilo para el pequeño aviso de "Modo Admin"
-  adminBadge: {
+  supervisorBadge: {
     fontSize: '0.5em',
     color: 'white',
-    backgroundColor: '#dc3545',
+    backgroundColor: '#17a2b8', // Color cyan para diferenciarlo del admin (rojo)
     padding: '4px 8px',
     borderRadius: '12px',
     verticalAlign: 'middle',

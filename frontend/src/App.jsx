@@ -9,6 +9,8 @@ import Cobranzas from './pages/Cobranzas';
 import Dashboard from './pages/Dashboard.jsx';
 import GestorPermisos from './pages/GestorPermisos'
 import AdminRoute from './components/AdminRoute';
+import SupervisorRoute from './components/SupervisorRoute';
+import PanelAdmin from './pages/PanelAdmin';
 
 export default function App() {
   return (
@@ -21,7 +23,8 @@ export default function App() {
         <Route path="/creditos"  element={<PrivateRoute><Creditos /></PrivateRoute>} />
         <Route path="/cobranzas" element={<PrivateRoute><Cobranzas /></PrivateRoute>} />
         <Route path="/estadisticas" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-        <Route path="/admin/permisos" element={<AdminRoute><GestorPermisos /></AdminRoute>} />
+        <Route path="/admin/roles" element={<AdminRoute> <PanelAdmin /> </AdminRoute>} />
+        <Route path="/supervisor/permisos-anulacion" element={<SupervisorRoute><GestorPermisos /></SupervisorRoute>} />
         <Route path="*"          element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
