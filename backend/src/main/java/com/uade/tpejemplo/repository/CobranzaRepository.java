@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -24,5 +25,5 @@ public interface CobranzaRepository extends JpaRepository<Cobranza, Long> {
     boolean existeCobranzaDelCredito(@Param("idCredito") Long idCredito);
 
     @Query("SELECT COALESCE(SUM(c.importe), 0) FROM Cobranza c")
-    Double sumarImporteTotal();
+    BigDecimal sumarImporteTotal();
 }

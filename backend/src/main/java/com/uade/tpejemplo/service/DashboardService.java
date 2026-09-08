@@ -6,6 +6,8 @@ import com.uade.tpejemplo.repository.CreditoRepository;
 import com.uade.tpejemplo.repository.CobranzaRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class DashboardService {
 
@@ -25,8 +27,8 @@ public class DashboardService {
         long clientes = clienteRepository.count();
         long creditos = creditoRepository.count();
 
-        double totalFinanciado = creditoRepository.sumarImporteCuotaTotal();
-        double totalCobrado = cobranzaRepository.sumarImporteTotal();
+        BigDecimal totalFinanciado = creditoRepository.sumarImporteCuotaTotal();
+        BigDecimal totalCobrado = cobranzaRepository.sumarImporteTotal();
 
         return new DashboardStatsResponse(clientes, creditos, totalFinanciado, totalCobrado);
     }
