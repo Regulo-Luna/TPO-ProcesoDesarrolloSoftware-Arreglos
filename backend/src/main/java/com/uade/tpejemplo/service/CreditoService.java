@@ -46,7 +46,7 @@ public class CreditoService {
 
     public CreditoResponse buscarPorId(Long id) {
         Credito credito = buscarCredito(id);
-        return toResponse(credito, cuotaRepository.findByIdIdCredito(id));
+        return toResponse(credito, cuotaRepository.buscarPorCredito(id));
     }
 
     public List<CreditoResponse> listarPorCliente(String dniCliente) {
@@ -54,7 +54,7 @@ public class CreditoService {
             throw new ResourceNotFoundException("Cliente", "DNI", dniCliente);
         }
         return creditoRepository.findByClienteDni(dniCliente).stream()
-            .map(c -> toResponse(c, cuotaRepository.findByIdIdCredito(c.getId())))
+            .map(c -> toResponse(c, cuotaRepository.buscarPorCredito(c.getId())))
             .toList();
     }
 
