@@ -37,7 +37,7 @@ public class AuthService {
 
         usuarioRepository.save(usuario);
 
-        return AuthResponse.desde(jwtUtil.generarToken(usuario), usuario);
+        return AuthResponse.desde(jwtUtil.generarToken(usuario.getUsername()), usuario);
     }
 
     public AuthResponse login(LoginRequest request) {
@@ -47,7 +47,7 @@ public class AuthService {
 
         Usuario usuario = buscar(request.getUsername());
 
-        return AuthResponse.desde(jwtUtil.generarToken(usuario), usuario);
+        return AuthResponse.desde(jwtUtil.generarToken(usuario.getUsername()), usuario);
     }
 
     private Usuario buscar(String username) {
