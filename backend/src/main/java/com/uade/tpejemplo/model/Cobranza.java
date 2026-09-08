@@ -43,10 +43,11 @@ public class Cobranza {
     }
 
     /**
-     * Unica forma de registrar una cobranza. La fecha la pone la propia
-     * cobranza (es el momento del cobro), no quien la registra.
+     * Visible solo dentro del paquete model: una cobranza no se crea
+     * suelta, la crea su cuota. La fecha la pone la propia cobranza (es
+     * el momento del cobro), no quien la registra.
      */
-    public static Cobranza registrar(Cuota cuota, BigDecimal importe) {
+    static Cobranza registrar(Cuota cuota, BigDecimal importe) {
         return new Cobranza(cuota, importe);
     }
 

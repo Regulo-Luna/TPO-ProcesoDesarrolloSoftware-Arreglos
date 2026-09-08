@@ -30,14 +30,7 @@ public class CobranzaService {
                 "Cuota", "idCredito/idCuota", request.getIdCredito() + "/" + request.getIdCuota()
             ));
 
-        if (cuota.estaPagada()) {
-            throw new BusinessException(
-                "La cuota " + request.getIdCuota() + " del crédito " + request.getIdCredito() + " ya fue pagada"
-            );
-        }
-
-        Cobranza cobranza = Cobranza.registrar(cuota, request.getImporte());
-        cobranzaRepository.save(cobranza);
+        Cobranza cobranza = cobranzaRepository.save(cuota.registrarCobranza(request.getImporte()));
         return CobranzaResponse.desde(cobranza);
     }
 

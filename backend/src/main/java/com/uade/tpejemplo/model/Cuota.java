@@ -1,5 +1,6 @@
 package com.uade.tpejemplo.model;
 
+import com.uade.tpejemplo.exception.BusinessException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -61,5 +62,25 @@ public class Cuota {
      */
     public boolean estaPagada() {
         return cobranzas.stream().anyMatch(cobranza -> !cobranza.isAnulada());
+    }
+
+    /**
+     * La cuota crea su propia cobranza: es quien sabe si ya esta pagada y
+     * cuanto vale, asi que es quien puede rechazar el cobro.
+     */
+    public Cobranza registrarCobranza(BigDecimal importe) {
+        if (estaPagada()) {
+            throw new BusinessException(
+                "La cuota " + numero + " del crédito " + credito.getId() + " ya fue pagada"
+            );
+        }
+        if (importe.compareTo(this.importe) != 0) {
+            throw new BusinessException(
+                "El importe " + importe + " no coincide con el de la cuota, " + this.importe
+            );
+        }
+        Cobranza cobranza = Cobranza.registrar(this, importe);
+        cobranzas.add(cobranza);
+        return cobranza;
     }
 }
