@@ -54,7 +54,7 @@ public class CreditoServiceImpl implements CreditoService {
 
     @Override
     public List<CreditoResponse> listarPorCliente(String dniCliente) {
-        if (!clienteRepository.existsByDni(dniCliente)) {
+        if (!clienteRepository.existsById(dniCliente)) {
             throw new ResourceNotFoundException("Cliente", "DNI", dniCliente);
         }
         return creditoRepository.findByClienteDni(dniCliente).stream()
@@ -82,7 +82,7 @@ public class CreditoServiceImpl implements CreditoService {
     }
 
     private Cliente buscarCliente(String dni) {
-        return clienteRepository.findByDni(dni)
+        return clienteRepository.findById(dni)
             .orElseThrow(() -> new ResourceNotFoundException("Cliente", "DNI", dni));
     }
 

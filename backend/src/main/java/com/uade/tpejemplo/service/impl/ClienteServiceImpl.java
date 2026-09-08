@@ -20,7 +20,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ClienteResponse crear(ClienteRequest request) {
-        if (clienteRepository.existsByDni(request.getDni())) {
+        if (clienteRepository.existsById(request.getDni())) {
             throw new BusinessException("Ya existe un cliente con DNI: " + request.getDni());
         }
         Cliente cliente = Cliente.nuevo(request.getDni(), request.getNombre());
@@ -30,7 +30,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ClienteResponse buscarPorDni(String dni) {
-        Cliente cliente = clienteRepository.findByDni(dni)
+        Cliente cliente = clienteRepository.findById(dni)
             .orElseThrow(() -> new ResourceNotFoundException("Cliente", "DNI", dni));
         return ClienteResponse.desde(cliente);
     }
