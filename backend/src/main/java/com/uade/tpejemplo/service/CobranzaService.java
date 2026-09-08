@@ -12,6 +12,7 @@ import com.uade.tpejemplo.repository.CuotaRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,6 +24,7 @@ public class CobranzaService {
     private final CobranzaRepository cobranzaRepository;
     private final CuotaRepository cuotaRepository;
 
+    @Transactional
     public CobranzaResponse registrar(CobranzaRequest request) {
         CuotaId cuotaId = new CuotaId(request.getIdCredito(), request.getIdCuota());
 
@@ -31,7 +33,7 @@ public class CobranzaService {
                 "Cuota", "idCredito/idCuota", request.getIdCredito() + "/" + request.getIdCuota()
             ));
 
-        if (cobranzaRepository.existeCobranzaDeLaCuota(request.getIdCredito(), request.getIdCuota())) {
+        if (cuota.estaPagada()) {
             throw new BusinessException(
                 "La cuota " + request.getIdCuota() + " del crédito " + request.getIdCredito() + " ya fue pagada"
             );

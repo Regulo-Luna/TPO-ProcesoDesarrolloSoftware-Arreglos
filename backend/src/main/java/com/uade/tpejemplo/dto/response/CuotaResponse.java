@@ -15,12 +15,12 @@ public class CuotaResponse {
     private LocalDate fechaVencimiento;
     private boolean pagada;
 
-    public static CuotaResponse desde(Cuota cuota, boolean pagada) {
+    public static CuotaResponse desde(Cuota cuota) {
         return new CuotaResponse(
             cuota.getId().getIdCredito(),
             cuota.getId().getIdCuota(),
             cuota.getFechaVencimiento(),
-            pagada
+            cuota.estaPagada()
         );
     }
 }

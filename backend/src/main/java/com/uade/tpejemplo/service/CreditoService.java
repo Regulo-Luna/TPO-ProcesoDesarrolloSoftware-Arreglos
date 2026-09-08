@@ -83,16 +83,9 @@ public class CreditoService {
 
     private CreditoResponse toResponse(Credito credito, List<Cuota> cuotas) {
         List<CuotaResponse> cuotasResponse = cuotas.stream()
-            .map(cuota -> CuotaResponse.desde(cuota, estaPagada(cuota)))
+            .map(CuotaResponse::desde)
             .toList();
 
         return CreditoResponse.desde(credito, cuotasResponse);
-    }
-
-    private boolean estaPagada(Cuota cuota) {
-        return cobranzaRepository.existeCobranzaDeLaCuota(
-            cuota.getId().getIdCredito(),
-            cuota.getId().getIdCuota()
-        );
     }
 }

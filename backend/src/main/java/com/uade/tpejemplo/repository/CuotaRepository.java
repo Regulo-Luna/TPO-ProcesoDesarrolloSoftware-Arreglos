@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface CuotaRepository extends JpaRepository<Cuota, CuotaId> {
 
-    @Query("SELECT c FROM Cuota c WHERE c.id.idCredito = :idCredito ORDER BY c.id.idCuota")
+    @Query("SELECT DISTINCT c FROM Cuota c LEFT JOIN FETCH c.cobranzas WHERE c.id.idCredito = :idCredito ORDER BY c.id.idCuota")
     List<Cuota> buscarPorCredito(@Param("idCredito") Long idCredito);
 }

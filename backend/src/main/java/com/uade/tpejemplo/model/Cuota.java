@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "cuotas")
@@ -26,6 +28,11 @@ public class Cuota {
     @Column(name = "fecha_vencimiento", nullable = false)
     private LocalDate fechaVencimiento;
 
+    /** Sin getter: la cuota contesta estaPagada(), no entrega la lista. */
+    @Getter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "cuota", fetch = FetchType.LAZY)
+    private List<Cobranza> cobranzas = new ArrayList<>();
+
     /**
      * Visible solo dentro del paquete model: una cuota no se crea suelta,
      * la crea el credito al generar su plan.
@@ -34,5 +41,13 @@ public class Cuota {
         this.id = id;
         this.credito = credito;
         this.fechaVencimiento = fechaVencimiento;
+    }
+
+    /**
+     * Una cuota esta pagada cuando tiene una cobranza vigente. Las
+     * anuladas no cuentan: anular una cobranza es deshacer el pago.
+     */
+    public boolean estaPagada() {
+        return cobranzas.stream().anyMatch(cobranza -> !cobranza.isAnulada());
     }
 }
