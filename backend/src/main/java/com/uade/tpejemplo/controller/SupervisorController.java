@@ -27,9 +27,4 @@ public class SupervisorController {
     public UsuarioResponse actualizarPermisosAnulacion(@PathVariable Long id, @RequestBody PermisosRequest request) {
         return adminService.actualizarPermisos(id, request);
     }
-
-    @GetMapping("/dashboard")
-    public Object obtenerEstadisticas() {
-        return "Datos del dashboard en construcción...";
-    }
 }
