@@ -74,14 +74,14 @@ Authorization: Bearer {{token}}
 
 ###
 # Cobranzas - Registrar pago de una cuota
-# Ajustar idCredito e idCuota según los datos reales
+# Ajustar idCredito y numeroCuota según los datos reales
 POST {{host}}/api/cobranzas
 Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
 
 {
   "idCredito": 1,
-  "idCuota": 1,
+  "numeroCuota": 1,
   "importe": 10000
 }
 

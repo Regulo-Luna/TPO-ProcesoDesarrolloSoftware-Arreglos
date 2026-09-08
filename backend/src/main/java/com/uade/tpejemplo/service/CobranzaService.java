@@ -25,9 +25,9 @@ public class CobranzaService {
 
     @Transactional
     public CobranzaResponse registrar(CobranzaRequest request) {
-        Cuota cuota = cuotaRepository.buscarPorCreditoYNumero(request.getIdCredito(), request.getIdCuota())
+        Cuota cuota = cuotaRepository.buscarPorCreditoYNumero(request.getIdCredito(), request.getNumeroCuota())
             .orElseThrow(() -> new ResourceNotFoundException(
-                "Cuota", "idCredito/idCuota", request.getIdCredito() + "/" + request.getIdCuota()
+                "Cuota", "idCredito/numeroCuota", request.getIdCredito() + "/" + request.getNumeroCuota()
             ));
 
         Cobranza cobranza = cobranzaRepository.save(cuota.registrarCobranza(request.getImporte()));

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public class CuotaResponse {
 
     private Long idCredito;
-    private Integer idCuota;
+    private Integer numeroCuota;
     private BigDecimal importe;
     private LocalDate fechaVencimiento;
     private boolean pagada;

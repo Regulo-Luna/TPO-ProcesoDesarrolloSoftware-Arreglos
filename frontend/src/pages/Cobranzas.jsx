@@ -9,7 +9,7 @@ export default function Cobranzas() {
   
   const [idCredito, setIdCredito] = useState('');
   const [buscado, setBuscado]     = useState(false);
-  const [form, setForm]           = useState({ idCredito:'', idCuota:'', importe:'' });
+  const [form, setForm]           = useState({ idCredito:'', numeroCuota:'', importe:'' });
 
   const buscar = async (e) => {
     e.preventDefault();
@@ -20,10 +20,10 @@ export default function Cobranzas() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = { idCredito: Number(form.idCredito), idCuota: Number(form.idCuota), importe: Number(form.importe) };
+    const payload = { idCredito: Number(form.idCredito), numeroCuota: Number(form.numeroCuota), importe: Number(form.importe) };
     const result = await dispatch(addCobranza(payload));
     if (result.meta.requestStatus === 'fulfilled') {
-      setForm({ idCredito:'', idCuota:'', importe:'' });
+      setForm({ idCredito:'', numeroCuota:'', importe:'' });
       if (String(form.idCredito) === idCredito) dispatch(fetchCobranzasPorCredito(idCredito));
     }
   };
@@ -57,7 +57,7 @@ export default function Cobranzas() {
         {error && <div style={styles.error}>{error}</div>}
         <form onSubmit={handleSubmit} style={styles.row}>
           <input style={styles.input} placeholder="ID crédito" type="number" value={form.idCredito} onChange={e => setForm({...form, idCredito: e.target.value})} required />
-          <input style={styles.input} placeholder="Nro. cuota"  type="number" min="1" value={form.idCuota}   onChange={e => setForm({...form, idCuota: e.target.value})}   required />
+          <input style={styles.input} placeholder="Nro. cuota"  type="number" min="1" value={form.numeroCuota}   onChange={e => setForm({...form, numeroCuota: e.target.value})}   required />
           <input style={styles.input} placeholder="Importe"     type="number" value={form.importe}    onChange={e => setForm({...form, importe: e.target.value})}    required />
           <button style={styles.btn} disabled={loading}>{loading ? 'Registrando...' : 'Registrar'}</button>
         </form>
@@ -88,7 +88,7 @@ export default function Cobranzas() {
                       {c.anulada && <span style={styles.badgeAnulada}> [ANULADA]</span>}
                     </td>
                     <td style={styles.td}>{c.idCredito}</td>
-                    <td style={styles.td}>{c.idCuota}</td>
+                    <td style={styles.td}>{c.numeroCuota}</td>
                     <td style={styles.td}>${c.importe}</td>
                     <td style={styles.td}>
                       {!c.anulada && user?.puedeAnularCobranza && (

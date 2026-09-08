@@ -111,8 +111,8 @@ export default function Creditos() {
                 </thead>
                 <tbody>
                   {(cr.cuotas || []).map(c => (
-                    <tr key={c.idCuota}>
-                      <td style={{padding: '5px 0'}}>{c.idCuota}</td>
+                    <tr key={c.numeroCuota}>
+                      <td style={{padding: '5px 0'}}>{c.numeroCuota}</td>
                       <td>{c.fechaVencimiento}</td>
                       <td style={{ color: c.pagada ? '#2e7d32' : '#c62828', fontWeight: 'bold' }}>
                         {c.pagada ? '✔ Pagada' : '✘ Pendiente'}

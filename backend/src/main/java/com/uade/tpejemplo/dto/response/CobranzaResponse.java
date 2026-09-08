@@ -16,7 +16,7 @@ public class CobranzaResponse {
 
     private Long id;
     private Long idCredito;
-    private Integer idCuota;
+    private Integer numeroCuota;
     private BigDecimal importe;
     private LocalDate fechaCobranza;
     private boolean anulada;
@@ -25,7 +25,7 @@ public class CobranzaResponse {
         return CobranzaResponse.builder()
             .id(cobranza.getId())
             .idCredito(cobranza.getCuota().getCredito().getId())
-            .idCuota(cobranza.getCuota().getNumero())
+            .numeroCuota(cobranza.getCuota().getNumero())
             .importe(cobranza.getImporte())
             .fechaCobranza(cobranza.getFechaCobranza())
             .anulada(cobranza.isAnulada())
