@@ -1,5 +1,6 @@
 package com.uade.tpejemplo.model;
 
+import com.uade.tpejemplo.exception.BusinessException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -127,7 +128,18 @@ public class Credito {
         return plan;
     }
 
-    public void anular() {
+    /**
+     * Un credito con cobranzas registradas no se puede anular. El credito
+     * no sabe por si mismo si tiene cobranzas -esa es informacion de la
+     * cobranza, no suya- asi que quien llama se lo cuenta; el credito es
+     * quien decide si eso alcanza para rechazar la anulacion.
+     */
+    public void anular(boolean tieneCobranzas) {
+        if (tieneCobranzas) {
+            throw new BusinessException(
+                "No se puede anular el crédito " + id + " porque tiene cobranzas registradas."
+            );
+        }
         this.anulado = true;
     }
 }

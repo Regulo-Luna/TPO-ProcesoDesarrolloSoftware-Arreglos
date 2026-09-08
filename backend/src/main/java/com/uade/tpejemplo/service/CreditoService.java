@@ -3,7 +3,6 @@ package com.uade.tpejemplo.service;
 import com.uade.tpejemplo.dto.request.CreditoRequest;
 import com.uade.tpejemplo.dto.response.CreditoResponse;
 import com.uade.tpejemplo.dto.response.CuotaResponse;
-import com.uade.tpejemplo.exception.BusinessException;
 import com.uade.tpejemplo.exception.ResourceNotFoundException;
 import com.uade.tpejemplo.model.Cliente;
 import com.uade.tpejemplo.model.Credito;
@@ -61,13 +60,7 @@ public class CreditoService {
     public void anularCredito(Long id) {
         Credito credito = buscarCredito(id);
 
-        if (cobranzaRepository.existeCobranzaDelCredito(id)) {
-            throw new BusinessException(
-                "No se puede anular el crédito " + id + " porque tiene cobranzas registradas."
-            );
-        }
-
-        credito.anular();
+        credito.anular(cobranzaRepository.existeCobranzaDelCredito(id));
         creditoRepository.save(credito);
     }
 
