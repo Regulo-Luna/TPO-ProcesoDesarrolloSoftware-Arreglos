@@ -1,6 +1,6 @@
 package com.uade.tpejemplo.service;
 
-import com.uade.tpejemplo.dto.response.DashboardStatsResponseDTO;
+import com.uade.tpejemplo.dto.response.DashboardStatsResponse;
 import com.uade.tpejemplo.repository.ClienteRepository;
 import com.uade.tpejemplo.repository.CreditoRepository;
 import com.uade.tpejemplo.repository.CobranzaRepository;
@@ -21,13 +21,13 @@ public class DashboardService {
         this.cobranzaRepository = cobranzaRepository;
     }
 
-    public DashboardStatsResponseDTO obtenerEstadisticasGenerales() {
+    public DashboardStatsResponse obtenerEstadisticasGenerales() {
         long clientes = clienteRepository.count();
         long creditos = creditoRepository.count();
 
-        double totalFinanciado = creditoRepository.sumMontoTotal();
-        double totalCobrado = cobranzaRepository.sumMontoTotal();
+        double totalFinanciado = creditoRepository.sumarImporteCuotaTotal();
+        double totalCobrado = cobranzaRepository.sumarImporteTotal();
 
-        return new DashboardStatsResponseDTO(clientes, creditos, totalFinanciado, totalCobrado);
+        return new DashboardStatsResponse(clientes, creditos, totalFinanciado, totalCobrado);
     }
 }

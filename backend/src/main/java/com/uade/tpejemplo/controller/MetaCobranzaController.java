@@ -1,6 +1,7 @@
 package com.uade.tpejemplo.controller;
 
-import com.uade.tpejemplo.dto.request.MetaCobranzaRequest; // Ajusta según tu estructura
+import com.uade.tpejemplo.dto.request.MetaCobranzaRequest;
+import com.uade.tpejemplo.dto.response.MetaCobranzaResponse;
 import com.uade.tpejemplo.service.MetaCobranzaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +19,17 @@ public class MetaCobranzaController {
     private final MetaCobranzaService metaService;
 
     @GetMapping
-    public ResponseEntity<List<MetaCobranzaRequest>> listarMetas() {
+    public ResponseEntity<List<MetaCobranzaResponse>> listarMetas() {
         return ResponseEntity.ok(metaService.obtenerTodas());
     }
 
     @PostMapping
-    public ResponseEntity<MetaCobranzaRequest> crearMeta(@Valid @RequestBody MetaCobranzaRequest metaRequest) {
+    public ResponseEntity<MetaCobranzaResponse> crearMeta(@Valid @RequestBody MetaCobranzaRequest metaRequest) {
         return ResponseEntity.ok(metaService.guardarMeta(metaRequest));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MetaCobranzaRequest> actualizarMeta(@PathVariable Long id, @Valid @RequestBody MetaCobranzaRequest metaRequest) {
+    public ResponseEntity<MetaCobranzaResponse> actualizarMeta(@PathVariable Long id, @Valid @RequestBody MetaCobranzaRequest metaRequest) {
         return ResponseEntity.ok(metaService.actualizarMeta(id, metaRequest));
     }
 

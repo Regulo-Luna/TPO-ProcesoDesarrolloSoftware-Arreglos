@@ -34,7 +34,7 @@ public class CreditoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCredito(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminarCredito(@PathVariable Long id) {
         creditoService.eliminarCredito(id);
         return ResponseEntity.noContent().build();
     }

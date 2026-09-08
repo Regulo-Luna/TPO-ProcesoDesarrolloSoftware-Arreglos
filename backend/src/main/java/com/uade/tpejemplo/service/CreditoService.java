@@ -65,7 +65,7 @@ public class CreditoService {
     public void anularCredito(Long id) {
         Credito credito = buscarCredito(id);
 
-        if (cobranzaRepository.existsByCuotaIdIdCredito(id)) {
+        if (cobranzaRepository.existeCobranzaDelCredito(id)) {
             throw new BusinessException(
                 "No se puede anular el crédito " + id + " porque tiene cobranzas registradas."
             );
@@ -94,7 +94,7 @@ public class CreditoService {
     }
 
     private boolean estaPagada(Cuota cuota) {
-        return cobranzaRepository.existsByCuotaIdIdCreditoAndCuotaIdIdCuota(
+        return cobranzaRepository.existeCobranzaDeLaCuota(
             cuota.getId().getIdCredito(),
             cuota.getId().getIdCuota()
         );

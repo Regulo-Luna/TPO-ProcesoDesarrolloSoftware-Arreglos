@@ -1,7 +1,7 @@
 package com.uade.tpejemplo.controller;
 
 import com.uade.tpejemplo.service.DashboardService;
-import com.uade.tpejemplo.dto.response.DashboardStatsResponseDTO;
+import com.uade.tpejemplo.dto.response.DashboardStatsResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,7 @@ public class DashboardController {
     }
 
     @GetMapping("/stats")
-    public ResponseEntity<DashboardStatsResponseDTO> getStats() {
+    public ResponseEntity<DashboardStatsResponse> obtenerEstadisticas() {
         return ResponseEntity.ok(dashboardService.obtenerEstadisticasGenerales());
     }
 }

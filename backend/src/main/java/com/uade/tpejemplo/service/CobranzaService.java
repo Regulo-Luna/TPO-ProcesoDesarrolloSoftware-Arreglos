@@ -31,7 +31,7 @@ public class CobranzaService {
                 "Cuota", "idCredito/idCuota", request.getIdCredito() + "/" + request.getIdCuota()
             ));
 
-        if (cobranzaRepository.existsByCuotaIdIdCreditoAndCuotaIdIdCuota(request.getIdCredito(), request.getIdCuota())) {
+        if (cobranzaRepository.existeCobranzaDeLaCuota(request.getIdCredito(), request.getIdCuota())) {
             throw new BusinessException(
                 "La cuota " + request.getIdCuota() + " del crédito " + request.getIdCredito() + " ya fue pagada"
             );
@@ -43,7 +43,7 @@ public class CobranzaService {
     }
 
     public List<CobranzaResponse> listarPorCredito(Long idCredito) {
-        return cobranzaRepository.findByCuotaIdIdCredito(idCredito).stream()
+        return cobranzaRepository.buscarPorCredito(idCredito).stream()
             .map(CobranzaResponse::desde)
             .toList();
     }

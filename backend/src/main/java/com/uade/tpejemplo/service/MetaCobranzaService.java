@@ -1,6 +1,7 @@
 package com.uade.tpejemplo.service;
 
 import com.uade.tpejemplo.dto.request.MetaCobranzaRequest;
+import com.uade.tpejemplo.dto.response.MetaCobranzaResponse;
 import com.uade.tpejemplo.exception.ResourceNotFoundException;
 import com.uade.tpejemplo.model.MetaCobranza;
 import com.uade.tpejemplo.repository.MetaCobranzaRepository;
@@ -16,25 +17,25 @@ public class MetaCobranzaService {
 
     private final MetaCobranzaRepository metaCobranzaRepository;
 
-    public List<MetaCobranzaRequest> obtenerTodas() {
+    public List<MetaCobranzaResponse> obtenerTodas() {
         return metaCobranzaRepository.findAll().stream()
-            .map(MetaCobranzaRequest::desde)
+            .map(MetaCobranzaResponse::desde)
             .toList();
     }
 
     @Transactional
-    public MetaCobranzaRequest guardarMeta(MetaCobranzaRequest metaRequest) {
+    public MetaCobranzaResponse guardarMeta(MetaCobranzaRequest metaRequest) {
         MetaCobranza meta = MetaCobranza.nueva(metaRequest.getMes(), metaRequest.getMontoObjetivo());
-        return MetaCobranzaRequest.desde(metaCobranzaRepository.save(meta));
+        return MetaCobranzaResponse.desde(metaCobranzaRepository.save(meta));
     }
 
     @Transactional
-    public MetaCobranzaRequest actualizarMeta(Long id, MetaCobranzaRequest metaRequest) {
+    public MetaCobranzaResponse actualizarMeta(Long id, MetaCobranzaRequest metaRequest) {
         MetaCobranza meta = buscarMeta(id);
 
         meta.actualizar(metaRequest.getMes(), metaRequest.getMontoObjetivo());
 
-        return MetaCobranzaRequest.desde(metaCobranzaRepository.save(meta));
+        return MetaCobranzaResponse.desde(metaCobranzaRepository.save(meta));
     }
 
     @Transactional
