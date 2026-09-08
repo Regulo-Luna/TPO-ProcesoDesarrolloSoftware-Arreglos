@@ -35,12 +35,7 @@ public class DataInitializer implements CommandLineRunner {
             return;
         }
 
-        Usuario usuario = Usuario.builder()
-                .username(username)
-                .password(passwordEncoder.encode(username))
-                .rol(rol)
-                .permisos(permisos)
-                .build();
+        Usuario usuario = Usuario.nuevo(username, passwordEncoder.encode(username), rol, permisos);
 
         usuarioRepository.save(usuario);
         log.info("Usuario '{}' creado con rol {}", username, rol);

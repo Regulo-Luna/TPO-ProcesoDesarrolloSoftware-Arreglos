@@ -5,6 +5,7 @@ import com.uade.tpejemplo.dto.request.RegisterRequest;
 import com.uade.tpejemplo.dto.response.AuthResponse;
 import com.uade.tpejemplo.exception.BusinessException;
 import com.uade.tpejemplo.exception.ResourceNotFoundException;
+import com.uade.tpejemplo.model.Permisos;
 import com.uade.tpejemplo.model.Rol;
 import com.uade.tpejemplo.model.Usuario;
 import com.uade.tpejemplo.repository.UsuarioRepository;
@@ -29,11 +30,12 @@ public class AuthService {
             throw new BusinessException("El usuario '" + request.getUsername() + "' ya existe");
         }
 
-        Usuario usuario = Usuario.builder()
-            .username(request.getUsername())
-            .password(passwordEncoder.encode(request.getPassword()))
-            .rol(Rol.USER)
-            .build();
+        Usuario usuario = Usuario.nuevo(
+            request.getUsername(),
+            passwordEncoder.encode(request.getPassword()),
+            Rol.USER,
+            Permisos.ninguno()
+        );
 
         usuarioRepository.save(usuario);
 
