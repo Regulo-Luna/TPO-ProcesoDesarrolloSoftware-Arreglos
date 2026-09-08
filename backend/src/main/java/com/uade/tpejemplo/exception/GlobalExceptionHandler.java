@@ -27,7 +27,6 @@ public class GlobalExceptionHandler {
         );
     }
 
-    // Captura errores de @Valid en los request
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException ex) {
         List<String> errores = ex.getBindingResult().getFieldErrors().stream()

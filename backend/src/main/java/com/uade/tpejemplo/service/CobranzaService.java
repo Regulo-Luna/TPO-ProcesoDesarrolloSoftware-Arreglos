@@ -54,7 +54,6 @@ public class CobranzaService {
         Cobranza cobranza = cobranzaRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Cobranza", "id", id));
 
-        // Regla de negocio: solo se pueden anular cobranzas del dia de hoy
         if (!cobranza.getFechaCobranza().isEqual(LocalDate.now())) {
             throw new BusinessException("Solo se pueden anular cobranzas del día de hoy.");
         }
