@@ -1,5 +1,6 @@
 package com.uade.tpejemplo.model;
 
+import com.uade.tpejemplo.exception.BusinessException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -51,7 +52,15 @@ public class Cobranza {
         return new Cobranza(cuota, importe);
     }
 
+    /**
+     * Solo se puede anular una cobranza del mismo dia: la cobranza es
+     * quien conoce su fecha, asi que es quien decide si todavia se
+     * puede deshacer.
+     */
     public void anular() {
+        if (!fechaCobranza.isEqual(LocalDate.now())) {
+            throw new BusinessException("Solo se pueden anular cobranzas del día de hoy.");
+        }
         this.anulada = true;
     }
 }
