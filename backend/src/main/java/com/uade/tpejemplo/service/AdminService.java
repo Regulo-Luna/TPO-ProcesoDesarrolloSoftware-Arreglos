@@ -20,6 +20,12 @@ public class AdminService {
 
     private final UsuarioRepository usuarioRepository;
 
+    public List<UsuarioResponse> listarTodos() {
+        return usuarioRepository.findAll().stream()
+                .map(UsuarioResponse::desde)
+                .toList();
+    }
+
     public List<UsuarioResponse> listarUsuarios() {
         return usuarioRepository.findAll().stream()
                 .filter(usuario -> usuario.getRol() != Rol.ADMIN)
