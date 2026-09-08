@@ -34,8 +34,8 @@ public class CreditoController {
     }
 
     @DeleteMapping("/anular/{id}")
-    public ResponseEntity<?> anularCredito(@PathVariable Long id) {
-    creditoService.anularCredito(id);
-    return ResponseEntity.ok(java.util.Map.of("mensaje", "Crédito anulado exitosamente"));
-}
+    public ResponseEntity<Void> anularCredito(@PathVariable Long id) {
+        creditoService.anularCredito(id);
+        return ResponseEntity.noContent().build();
+    }
 }
