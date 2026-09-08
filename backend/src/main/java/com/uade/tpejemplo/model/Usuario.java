@@ -28,16 +28,12 @@ public class Usuario {
     @Column(nullable = false)
     private Rol rol;
 
-    private boolean puedeAnularCredito;
-    private boolean puedeAnularCobranza;
+    @Embedded
+    @Builder.Default
+    private Permisos permisos = Permisos.ninguno();
 
-    /**
-     * Los permisos se cambian juntos y con nombre de negocio, en vez de
-     * quedar expuestos como dos setters sueltos.
-     */
-    public void otorgarPermisos(boolean puedeAnularCredito, boolean puedeAnularCobranza) {
-        this.puedeAnularCredito = puedeAnularCredito;
-        this.puedeAnularCobranza = puedeAnularCobranza;
+    public void otorgarPermisos(Permisos permisos) {
+        this.permisos = permisos;
     }
 
     /**

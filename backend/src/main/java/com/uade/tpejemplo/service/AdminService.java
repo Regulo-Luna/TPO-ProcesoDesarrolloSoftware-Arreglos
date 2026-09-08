@@ -5,6 +5,7 @@ import com.uade.tpejemplo.dto.request.RolRequest;
 import com.uade.tpejemplo.dto.response.UsuarioResponse;
 import com.uade.tpejemplo.exception.BusinessException;
 import com.uade.tpejemplo.exception.ResourceNotFoundException;
+import com.uade.tpejemplo.model.Permisos;
 import com.uade.tpejemplo.model.Rol;
 import com.uade.tpejemplo.model.Usuario;
 import com.uade.tpejemplo.repository.UsuarioRepository;
@@ -36,10 +37,10 @@ public class AdminService {
     public UsuarioResponse actualizarPermisos(Long id, PermisosRequest request) {
         Usuario usuario = buscar(id);
 
-        usuario.otorgarPermisos(
+        usuario.otorgarPermisos(Permisos.de(
                 request.isPuedeAnularCredito(),
                 request.isPuedeAnularCobranza()
-        );
+        ));
 
         usuarioRepository.save(usuario);
 

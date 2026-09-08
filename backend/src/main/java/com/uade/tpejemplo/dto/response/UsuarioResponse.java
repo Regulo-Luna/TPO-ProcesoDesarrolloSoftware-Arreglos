@@ -21,8 +21,8 @@ public class UsuarioResponse {
             usuario.getId(),
             usuario.getUsername(),
             usuario.getRol().name(),
-            usuario.isPuedeAnularCredito(),
-            usuario.isPuedeAnularCobranza()
+            usuario.getPermisos().isPuedeAnularCredito(),
+            usuario.getPermisos().isPuedeAnularCobranza()
         );
     }
 }

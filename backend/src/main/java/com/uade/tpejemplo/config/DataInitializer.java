@@ -1,5 +1,6 @@
 package com.uade.tpejemplo.config;
 
+import com.uade.tpejemplo.model.Permisos;
 import com.uade.tpejemplo.model.Rol;
 import com.uade.tpejemplo.model.Usuario;
 import com.uade.tpejemplo.repository.UsuarioRepository;
@@ -23,12 +24,12 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        crearSiNoExiste("admin", Rol.ADMIN, true);
-        crearSiNoExiste("supervisor", Rol.SUPERVISOR, true);
-        crearSiNoExiste("user", Rol.USER, false);
+        crearSiNoExiste("admin", Rol.ADMIN, Permisos.todos());
+        crearSiNoExiste("supervisor", Rol.SUPERVISOR, Permisos.todos());
+        crearSiNoExiste("user", Rol.USER, Permisos.ninguno());
     }
 
-    private void crearSiNoExiste(String username, Rol rol, boolean puedeAnular) {
+    private void crearSiNoExiste(String username, Rol rol, Permisos permisos) {
         if (usuarioRepository.existsByUsername(username)) {
             log.info("Usuario '{}' ya existe", username);
             return;
@@ -38,8 +39,7 @@ public class DataInitializer implements CommandLineRunner {
                 .username(username)
                 .password(passwordEncoder.encode(username))
                 .rol(rol)
-                .puedeAnularCredito(puedeAnular)
-                .puedeAnularCobranza(puedeAnular)
+                .permisos(permisos)
                 .build();
 
         usuarioRepository.save(usuario);
