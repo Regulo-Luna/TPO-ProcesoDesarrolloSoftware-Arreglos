@@ -1,4 +1,4 @@
-package com.uade.tpejemplo.exception;
+package com.uade.tpejemplo.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
