@@ -57,7 +57,7 @@ Authorization: Bearer {{token}}
   "dniCliente": "12345678",
   "deudaOriginal": 100000,
   "fecha": "2026-03-17",
-  "importeCuota": 10000,
+  "tasaInteres": 45,
   "cantidadCuotas": 10
 }
 

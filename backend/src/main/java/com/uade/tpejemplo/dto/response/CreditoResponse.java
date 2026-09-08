@@ -20,6 +20,8 @@ public class CreditoResponse {
     private String nombreCliente;
     private BigDecimal deudaOriginal;
     private LocalDate fecha;
+    private BigDecimal tasaInteres;
+    private BigDecimal totalADevolver;
     private BigDecimal importeCuota;
     private Integer cantidadCuotas;
     private List<CuotaResponse> cuotas;
@@ -32,6 +34,8 @@ public class CreditoResponse {
             .nombreCliente(credito.getCliente().getNombre())
             .deudaOriginal(credito.getDeudaOriginal())
             .fecha(credito.getFecha())
+            .tasaInteres(credito.getTasaInteres())
+            .totalADevolver(credito.totalADevolver())
             .importeCuota(credito.getImporteCuota())
             .cantidadCuotas(credito.getCantidadCuotas())
             .cuotas(cuotas)

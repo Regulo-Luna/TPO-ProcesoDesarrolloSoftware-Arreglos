@@ -36,7 +36,7 @@ public class CreditoService {
             cliente,
             request.getDeudaOriginal(),
             request.getFecha(),
-            request.getImporteCuota(),
+            request.getTasaInteres(),
             request.getCantidadCuotas()
         ));
         List<Cuota> cuotas = cuotaRepository.saveAll(credito.generarPlanDeCuotas());
