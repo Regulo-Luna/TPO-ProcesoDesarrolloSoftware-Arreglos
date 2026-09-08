@@ -122,11 +122,7 @@ public class Credito {
     public List<Cuota> generarPlanDeCuotas() {
         List<Cuota> plan = new ArrayList<>();
         for (int numeroCuota = 1; numeroCuota <= cantidadCuotas; numeroCuota++) {
-            plan.add(new Cuota(
-                new CuotaId(id, numeroCuota),
-                this,
-                fecha.plusMonths(numeroCuota)
-            ));
+            plan.add(new Cuota(this, numeroCuota, fecha.plusMonths(numeroCuota)));
         }
         return plan;
     }

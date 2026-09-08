@@ -6,7 +6,6 @@ import com.uade.tpejemplo.exception.BusinessException;
 import com.uade.tpejemplo.exception.ResourceNotFoundException;
 import com.uade.tpejemplo.model.Cobranza;
 import com.uade.tpejemplo.model.Cuota;
-import com.uade.tpejemplo.model.CuotaId;
 import com.uade.tpejemplo.repository.CobranzaRepository;
 import com.uade.tpejemplo.repository.CuotaRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +25,7 @@ public class CobranzaService {
 
     @Transactional
     public CobranzaResponse registrar(CobranzaRequest request) {
-        CuotaId cuotaId = new CuotaId(request.getIdCredito(), request.getIdCuota());
-
-        Cuota cuota = cuotaRepository.findById(cuotaId)
+        Cuota cuota = cuotaRepository.buscarPorCreditoYNumero(request.getIdCredito(), request.getIdCuota())
             .orElseThrow(() -> new ResourceNotFoundException(
                 "Cuota", "idCredito/idCuota", request.getIdCredito() + "/" + request.getIdCuota()
             ));

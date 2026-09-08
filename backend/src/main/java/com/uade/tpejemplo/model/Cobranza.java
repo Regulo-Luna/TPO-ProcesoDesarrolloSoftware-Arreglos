@@ -21,10 +21,7 @@ public class Cobranza {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-        @JoinColumn(name = "id_credito", referencedColumnName = "id_credito"),
-        @JoinColumn(name = "id_cuota",   referencedColumnName = "id_cuota")
-    })
+    @JoinColumn(name = "id_cuota", nullable = false)
     private Cuota cuota;
 
     @NotNull

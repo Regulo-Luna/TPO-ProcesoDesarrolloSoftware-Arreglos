@@ -17,8 +17,8 @@ public class CuotaResponse {
 
     public static CuotaResponse desde(Cuota cuota) {
         return new CuotaResponse(
-            cuota.getId().getIdCredito(),
-            cuota.getId().getIdCuota(),
+            cuota.getCredito().getId(),
+            cuota.getNumero(),
             cuota.getFechaVencimiento(),
             cuota.estaPagada()
         );

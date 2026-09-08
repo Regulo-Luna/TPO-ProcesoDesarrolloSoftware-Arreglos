@@ -24,8 +24,8 @@ public class CobranzaResponse {
     public static CobranzaResponse desde(Cobranza cobranza) {
         return CobranzaResponse.builder()
             .id(cobranza.getId())
-            .idCredito(cobranza.getCuota().getId().getIdCredito())
-            .idCuota(cobranza.getCuota().getId().getIdCuota())
+            .idCredito(cobranza.getCuota().getCredito().getId())
+            .idCuota(cobranza.getCuota().getNumero())
             .importe(cobranza.getImporte())
             .fechaCobranza(cobranza.getFechaCobranza())
             .anulada(cobranza.isAnulada())
