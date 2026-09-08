@@ -4,6 +4,7 @@ import com.uade.tpejemplo.model.Cuota;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -12,6 +13,7 @@ public class CuotaResponse {
 
     private Long idCredito;
     private Integer idCuota;
+    private BigDecimal importe;
     private LocalDate fechaVencimiento;
     private boolean pagada;
 
@@ -19,6 +21,7 @@ public class CuotaResponse {
         return new CuotaResponse(
             cuota.getCredito().getId(),
             cuota.getNumero(),
+            cuota.getImporte(),
             cuota.getFechaVencimiento(),
             cuota.estaPagada()
         );

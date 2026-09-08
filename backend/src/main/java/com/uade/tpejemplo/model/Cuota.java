@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,10 @@ public class Cuota {
     private Integer numero;
 
     @NotNull
+    @Column(name = "importe", nullable = false, precision = 12, scale = 2)
+    private BigDecimal importe;
+
+    @NotNull
     @Column(name = "fecha_vencimiento", nullable = false)
     private LocalDate fechaVencimiento;
 
@@ -43,9 +48,10 @@ public class Cuota {
      * Visible solo dentro del paquete model: una cuota no se crea suelta,
      * la crea el credito al generar su plan.
      */
-    Cuota(Credito credito, Integer numero, LocalDate fechaVencimiento) {
+    Cuota(Credito credito, Integer numero, BigDecimal importe, LocalDate fechaVencimiento) {
         this.credito = credito;
         this.numero = numero;
+        this.importe = importe;
         this.fechaVencimiento = fechaVencimiento;
     }
 
