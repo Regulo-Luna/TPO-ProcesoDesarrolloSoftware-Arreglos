@@ -53,11 +53,6 @@ public class Credito {
     @Column(name = "cantidad_cuotas", nullable = false)
     private Integer cantidadCuotas;
 
-    /** Sin getter: la coleccion es interna y exponerla entregaria la lista mutable. */
-    @Getter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "credito", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Cuota> cuotas;
-
     @Column(name = "anulado", nullable = false)
     private boolean anulado = false;
 
