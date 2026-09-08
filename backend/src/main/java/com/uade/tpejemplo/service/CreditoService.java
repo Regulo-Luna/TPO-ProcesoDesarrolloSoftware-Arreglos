@@ -58,10 +58,6 @@ public class CreditoService {
             .toList();
     }
 
-    public void eliminarCredito(Long id) {
-        creditoRepository.deleteById(id);
-    }
-
     public void anularCredito(Long id) {
         Credito credito = buscarCredito(id);
 

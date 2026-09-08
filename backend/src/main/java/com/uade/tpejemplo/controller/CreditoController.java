@@ -33,11 +33,6 @@ public class CreditoController {
         return ResponseEntity.ok(creditoService.listarPorCliente(dni));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarCredito(@PathVariable Long id) {
-        creditoService.eliminarCredito(id);
-        return ResponseEntity.noContent().build();
-    }
     @DeleteMapping("/anular/{id}")
     public ResponseEntity<?> anularCredito(@PathVariable Long id) {
     creditoService.anularCredito(id);
