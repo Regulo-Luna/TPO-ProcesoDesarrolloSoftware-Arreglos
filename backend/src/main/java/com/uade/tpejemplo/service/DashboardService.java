@@ -1,35 +1,8 @@
 package com.uade.tpejemplo.service;
 
 import com.uade.tpejemplo.dto.response.DashboardStatsResponse;
-import com.uade.tpejemplo.repository.ClienteRepository;
-import com.uade.tpejemplo.repository.CreditoRepository;
-import com.uade.tpejemplo.repository.CobranzaRepository;
-import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
+public interface DashboardService {
 
-@Service
-public class DashboardService {
-
-    private final ClienteRepository clienteRepository;
-    private final CreditoRepository creditoRepository;
-    private final CobranzaRepository cobranzaRepository;
-
-    public DashboardService(ClienteRepository clienteRepository, 
-                                CreditoRepository creditoRepository, 
-                                CobranzaRepository cobranzaRepository) {
-        this.clienteRepository = clienteRepository;
-        this.creditoRepository = creditoRepository;
-        this.cobranzaRepository = cobranzaRepository;
-    }
-
-    public DashboardStatsResponse obtenerEstadisticasGenerales() {
-        long clientes = clienteRepository.count();
-        long creditos = creditoRepository.count();
-
-        BigDecimal totalFinanciado = creditoRepository.sumarImporteCuotaTotal();
-        BigDecimal totalCobrado = cobranzaRepository.sumarImporteTotal();
-
-        return new DashboardStatsResponse(clientes, creditos, totalFinanciado, totalCobrado);
-    }
+    DashboardStatsResponse obtenerEstadisticasGenerales();
 }

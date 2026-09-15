@@ -2,39 +2,14 @@ package com.uade.tpejemplo.service;
 
 import com.uade.tpejemplo.dto.request.ClienteRequest;
 import com.uade.tpejemplo.dto.response.ClienteResponse;
-import com.uade.tpejemplo.exception.BusinessException;
-import com.uade.tpejemplo.exception.ResourceNotFoundException;
-import com.uade.tpejemplo.model.Cliente;
-import com.uade.tpejemplo.repository.ClienteRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class ClienteService {
+public interface ClienteService {
 
-    private final ClienteRepository clienteRepository;
+    ClienteResponse crear(ClienteRequest request);
 
-    public ClienteResponse crear(ClienteRequest request) {
-        if (clienteRepository.existsById(request.getDni())) {
-            throw new BusinessException("Ya existe un cliente con DNI: " + request.getDni());
-        }
-        Cliente cliente = Cliente.nuevo(request.getDni(), request.getNombre());
-        clienteRepository.save(cliente);
-        return ClienteResponse.desde(cliente);
-    }
+    ClienteResponse buscarPorDni(String dni);
 
-    public ClienteResponse buscarPorDni(String dni) {
-        Cliente cliente = clienteRepository.findById(dni)
-            .orElseThrow(() -> new ResourceNotFoundException("Cliente", "DNI", dni));
-        return ClienteResponse.desde(cliente);
-    }
-
-    public List<ClienteResponse> listarTodos() {
-        return clienteRepository.findAll().stream()
-            .map(ClienteResponse::desde)
-            .toList();
-    }
+    List<ClienteResponse> listarTodos();
 }
