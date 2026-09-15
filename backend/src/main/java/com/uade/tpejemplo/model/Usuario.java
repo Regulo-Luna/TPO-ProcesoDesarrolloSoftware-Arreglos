@@ -1,5 +1,6 @@
 package com.uade.tpejemplo.model;
 
+import com.uade.tpejemplo.model.interfaces.IUsuario;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "usuarios")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Usuario {
+public class Usuario implements IUsuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

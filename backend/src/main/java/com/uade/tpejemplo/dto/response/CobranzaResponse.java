@@ -1,6 +1,6 @@
 package com.uade.tpejemplo.dto.response;
 
-import com.uade.tpejemplo.model.Cobranza;
+import com.uade.tpejemplo.model.interfaces.ICobranza;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +21,7 @@ public class CobranzaResponse {
     private LocalDate fechaCobranza;
     private boolean anulada;
 
-    public static CobranzaResponse desde(Cobranza cobranza) {
+    public static CobranzaResponse desde(ICobranza cobranza) {
         return CobranzaResponse.builder()
             .id(cobranza.getId())
             .idCredito(cobranza.getCuota().getCredito().getId())

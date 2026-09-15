@@ -1,6 +1,7 @@
 package com.uade.tpejemplo.model;
 
 import com.uade.tpejemplo.exception.BusinessException;
+import com.uade.tpejemplo.model.interfaces.ICobranza;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 @Table(name = "cobranzas")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Cobranza {
+public class Cobranza implements ICobranza {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

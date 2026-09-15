@@ -1,6 +1,7 @@
 package com.uade.tpejemplo.model;
 
 import com.uade.tpejemplo.exception.BusinessException;
+import com.uade.tpejemplo.model.interfaces.ICredito;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -18,7 +19,7 @@ import java.util.List;
 @Table(name = "creditos")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Credito {
+public class Credito implements ICredito {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,6 +1,6 @@
 package com.uade.tpejemplo.security;
 
-import com.uade.tpejemplo.model.Usuario;
+import com.uade.tpejemplo.model.interfaces.IUsuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,11 +20,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UsuarioDetails implements UserDetails {
 
-    private final Usuario usuario;
+    private final IUsuario usuario;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().name()));
+        return List.of(new SimpleGrantedAuthority(usuario.getRol().autoridad()));
     }
 
     @Override

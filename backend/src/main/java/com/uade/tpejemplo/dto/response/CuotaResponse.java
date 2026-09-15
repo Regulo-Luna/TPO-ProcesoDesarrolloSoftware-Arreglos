@@ -1,6 +1,6 @@
 package com.uade.tpejemplo.dto.response;
 
-import com.uade.tpejemplo.model.Cuota;
+import com.uade.tpejemplo.model.interfaces.ICuota;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -17,7 +17,7 @@ public class CuotaResponse {
     private LocalDate fechaVencimiento;
     private boolean pagada;
 
-    public static CuotaResponse desde(Cuota cuota) {
+    public static CuotaResponse desde(ICuota cuota) {
         return new CuotaResponse(
             cuota.getCredito().getId(),
             cuota.getNumero(),

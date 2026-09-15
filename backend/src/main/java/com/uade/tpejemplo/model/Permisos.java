@@ -1,5 +1,6 @@
 package com.uade.tpejemplo.model;
 
+import com.uade.tpejemplo.model.interfaces.IPermisos;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Permisos {
+public class Permisos implements IPermisos {
 
     @Column(name = "puede_anular_credito", nullable = false)
     private boolean puedeAnularCredito;

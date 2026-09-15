@@ -1,5 +1,6 @@
 package com.uade.tpejemplo.model;
 
+import com.uade.tpejemplo.model.interfaces.ICliente;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "clientes")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Cliente {
+public class Cliente implements ICliente {
 
     @Id
     @Column(name = "dni", length = 15)

@@ -1,6 +1,7 @@
 package com.uade.tpejemplo.model;
 
 import com.uade.tpejemplo.exception.BusinessException;
+import com.uade.tpejemplo.model.interfaces.ICuota;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -17,7 +18,7 @@ import java.util.List;
 @Table(name = "cuotas", uniqueConstraints = @UniqueConstraint(columnNames = {"id_credito", "numero"}))
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Cuota {
+public class Cuota implements ICuota {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

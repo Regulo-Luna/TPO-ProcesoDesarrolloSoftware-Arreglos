@@ -1,6 +1,6 @@
 package com.uade.tpejemplo.dto.response;
 
-import com.uade.tpejemplo.model.Credito;
+import com.uade.tpejemplo.model.interfaces.ICredito;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +27,7 @@ public class CreditoResponse {
     private List<CuotaResponse> cuotas;
     private boolean anulado;
 
-    public static CreditoResponse desde(Credito credito, List<CuotaResponse> cuotas) {
+    public static CreditoResponse desde(ICredito credito, List<CuotaResponse> cuotas) {
         return CreditoResponse.builder()
             .id(credito.getId())
             .dniCliente(credito.getCliente().getDni())
