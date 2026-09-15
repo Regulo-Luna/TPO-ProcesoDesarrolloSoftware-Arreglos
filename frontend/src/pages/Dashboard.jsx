@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchEstadisticas } from '../store/slices/dashboardSlice'; 
-import MetaCobranza from './MetaCobranza';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -47,11 +46,6 @@ const Dashboard = () => {
            <h3>Monto Total Cobrado</h3>
            <p style={styles.valor}>${estadisticas?.montoTotalCobrado || 0}</p>
         </div>
-      </div>
-      
-      {/* Como el dashboard es exclusivo del supervisor, MetaCobranza se renderiza directo */}
-      <div style={{ marginTop: '30px', width: '100%' }}>
-          <MetaCobranza />
       </div>
     </div>
   );

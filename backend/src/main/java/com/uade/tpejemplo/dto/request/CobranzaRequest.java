@@ -13,7 +13,7 @@ public class CobranzaRequest {
     private Long idCredito;
 
     @NotNull(message = "El número de cuota es obligatorio")
-    private Integer idCuota;
+    private Integer numeroCuota;
 
     @NotNull(message = "El importe es obligatorio")
     @Positive(message = "El importe debe ser mayor a cero")

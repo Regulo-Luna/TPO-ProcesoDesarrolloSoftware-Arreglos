@@ -3,7 +3,6 @@ package com.uade.tpejemplo.service.impl;
 import com.uade.tpejemplo.dto.request.CreditoRequest;
 import com.uade.tpejemplo.dto.response.CreditoResponse;
 import com.uade.tpejemplo.dto.response.CuotaResponse;
-import com.uade.tpejemplo.exception.BusinessException;
 import com.uade.tpejemplo.exception.ResourceNotFoundException;
 import com.uade.tpejemplo.model.Cliente;
 import com.uade.tpejemplo.model.Credito;
@@ -29,12 +28,18 @@ public class CreditoServiceImpl implements CreditoService {
     private final CuotaRepository cuotaRepository;
     private final CobranzaRepository cobranzaRepository;
 
-    @Override
     @Transactional
+    @Override
     public CreditoResponse crear(CreditoRequest request) {
         Cliente cliente = buscarCliente(request.getDniCliente());
 
-        Credito credito = creditoRepository.save(nuevoCredito(request, cliente));
+        Credito credito = creditoRepository.save(Credito.nuevo(
+            cliente,
+            request.getDeudaOriginal(),
+            request.getFecha(),
+            request.getTasaInteres(),
+            request.getCantidadCuotas()
+        ));
         List<Cuota> cuotas = cuotaRepository.saveAll(credito.generarPlanDeCuotas());
 
         return toResponse(credito, cuotas);
@@ -43,40 +48,29 @@ public class CreditoServiceImpl implements CreditoService {
     @Override
     public CreditoResponse buscarPorId(Long id) {
         Credito credito = buscarCredito(id);
-        return toResponse(credito, cuotaRepository.findByIdIdCredito(id));
+        return toResponse(credito, cuotaRepository.buscarPorCredito(id));
     }
 
     @Override
     public List<CreditoResponse> listarPorCliente(String dniCliente) {
-        if (!clienteRepository.existsByDni(dniCliente)) {
+        if (!clienteRepository.existsById(dniCliente)) {
             throw new ResourceNotFoundException("Cliente", "DNI", dniCliente);
         }
         return creditoRepository.findByClienteDni(dniCliente).stream()
-            .map(c -> toResponse(c, cuotaRepository.findByIdIdCredito(c.getId())))
+            .map(c -> toResponse(c, cuotaRepository.buscarPorCredito(c.getId())))
             .toList();
-    }
-
-    @Override
-    public void eliminarCredito(Long id) {
-        creditoRepository.deleteById(id);
     }
 
     @Override
     public void anularCredito(Long id) {
         Credito credito = buscarCredito(id);
 
-        if (cobranzaRepository.existsByCuotaIdIdCredito(id)) {
-            throw new BusinessException(
-                "No se puede anular el crédito " + id + " porque tiene cobranzas registradas."
-            );
-        }
-
-        credito.setAnulado(true);
+        credito.anular(cobranzaRepository.existeCobranzaDelCredito(id));
         creditoRepository.save(credito);
     }
 
     private Cliente buscarCliente(String dni) {
-        return clienteRepository.findByDni(dni)
+        return clienteRepository.findById(dni)
             .orElseThrow(() -> new ResourceNotFoundException("Cliente", "DNI", dni));
     }
 
@@ -85,31 +79,11 @@ public class CreditoServiceImpl implements CreditoService {
             .orElseThrow(() -> new ResourceNotFoundException("Crédito", "id", id));
     }
 
-    private Credito nuevoCredito(CreditoRequest request, Cliente cliente) {
-        return new Credito(
-            null,
-            cliente,
-            request.getDeudaOriginal(),
-            request.getFecha(),
-            request.getImporteCuota(),
-            request.getCantidadCuotas(),
-            null,
-            false
-        );
-    }
-
     private CreditoResponse toResponse(Credito credito, List<Cuota> cuotas) {
         List<CuotaResponse> cuotasResponse = cuotas.stream()
-            .map(cuota -> CuotaResponse.desde(cuota, estaPagada(cuota)))
+            .map(CuotaResponse::desde)
             .toList();
 
         return CreditoResponse.desde(credito, cuotasResponse);
-    }
-
-    private boolean estaPagada(Cuota cuota) {
-        return cobranzaRepository.existsByCuotaIdIdCreditoAndCuotaIdIdCuota(
-            cuota.getId().getIdCredito(),
-            cuota.getId().getIdCuota()
-        );
     }
 }

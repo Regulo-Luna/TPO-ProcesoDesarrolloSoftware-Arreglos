@@ -46,9 +46,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/api/auth/**","/h2-console/**").permitAll()
-                // Rutas exclusivas para ADMIN
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                // Rutas exclusivas para SUPERVISOR
                 .requestMatchers("/api/supervisor/**", "/api/dashboard/**").hasRole("SUPERVISOR")
                 .anyRequest().authenticated()
             )

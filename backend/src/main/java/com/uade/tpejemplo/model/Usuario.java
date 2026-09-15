@@ -1,24 +1,15 @@
 package com.uade.tpejemplo.model;
 
+import com.uade.tpejemplo.model.interfaces.IUsuario;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.List;
-
 @Entity
 @Table(name = "usuarios")
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Usuario implements UserDetails {
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Usuario implements IUsuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,17 +25,34 @@ public class Usuario implements UserDetails {
     @Column(nullable = false)
     private Rol rol;
 
-    private boolean puedeAnularCredito = false;
-    private boolean puedeAnularCobranza = false;
+    @Embedded
+    private Permisos permisos;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + this.rol.name()));
+    private Usuario(String username, String passwordHasheado, Rol rol, Permisos permisos) {
+        this.username = username;
+        this.password = passwordHasheado;
+        this.rol = rol;
+        this.permisos = permisos;
     }
 
+    /**
+     * Unica forma de dar de alta un usuario: el id lo asigna la base, y
+     * quien lo crea decide su rol y permisos iniciales explicitamente,
+     * en vez de armarlo campo por campo con un builder publico.
+     */
+    public static Usuario nuevo(String username, String passwordHasheado, Rol rol, Permisos permisos) {
+        return new Usuario(username, passwordHasheado, rol, permisos);
+    }
 
-    @Override public boolean isAccountNonExpired()  { return true; }
-    @Override public boolean isAccountNonLocked()   { return true; }
-    @Override public boolean isCredentialsNonExpired() { return true; }
-    @Override public boolean isEnabled()            { return true; }
+    public void otorgarPermisos(Permisos permisos) {
+        this.permisos = permisos;
+    }
+
+    /**
+     * El rol se cambia con nombre de negocio en vez de un setter suelto:
+     * quien lo llama esta asignando un rol, no escribiendo un campo.
+     */
+    public void asignarRol(Rol rol) {
+        this.rol = rol;
+    }
 }

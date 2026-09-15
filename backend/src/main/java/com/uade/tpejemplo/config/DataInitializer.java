@@ -1,76 +1,43 @@
 package com.uade.tpejemplo.config;
 
+import com.uade.tpejemplo.model.Permisos;
 import com.uade.tpejemplo.model.Rol;
 import com.uade.tpejemplo.model.Usuario;
 import com.uade.tpejemplo.repository.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+/**
+ * Usuarios semilla para poder entrar al sistema con la base en memoria.
+ * La contrasena de cada uno es igual a su nombre de usuario.
+ */
 @Component
+@RequiredArgsConstructor
+@Slf4j
 public class DataInitializer implements CommandLineRunner {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // Inyección por constructor (Buena práctica recomendada por la cátedra)
-    public DataInitializer(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
-        this.usuarioRepository = usuarioRepository;
-        this.passwordEncoder = passwordEncoder;
+    @Override
+    public void run(String... args) {
+        crearSiNoExiste("admin", Rol.ADMIN, Permisos.todos());
+        crearSiNoExiste("supervisor", Rol.SUPERVISOR, Permisos.todos());
+        crearSiNoExiste("user", Rol.USER, Permisos.ninguno());
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-        
-        // 1. Creación del Admin
-        String adminUsername = "admin";
-        if (!usuarioRepository.existsByUsername(adminUsername)) {
-            Usuario admin = Usuario.builder()
-                    .username(adminUsername)
-                    .password(passwordEncoder.encode("admin"))
-                    .rol(Rol.ADMIN)
-                    .puedeAnularCredito(true)  
-                    .puedeAnularCobranza(true)
-                    .build();
-
-            usuarioRepository.save(admin);
-            System.out.println("--> [DataInitializer] Usuario 'admin' creado exitosamente.");
-        } else {
-            System.out.println("--> [DataInitializer] El usuario 'admin' ya existe.");
+    private void crearSiNoExiste(String username, Rol rol, Permisos permisos) {
+        if (usuarioRepository.existsByUsername(username)) {
+            log.info("Usuario '{}' ya existe", username);
+            return;
         }
 
-        // 2. Creación del Supervisor
-        String supervisorUsername = "supervisor";
-        if (!usuarioRepository.existsByUsername(supervisorUsername)) {
-            Usuario supervisor = Usuario.builder()
-                    .username(supervisorUsername)
-                    .password(passwordEncoder.encode("supervisor"))
-                    .rol(Rol.SUPERVISOR) // IMPORTANTE: Asegúrate de tener SUPERVISOR en tu enum Rol
-                    .puedeAnularCredito(true) // Ajusta estos permisos según tu regla de negocio
-                    .puedeAnularCobranza(true)
-                    .build();
+        Usuario usuario = Usuario.nuevo(username, passwordEncoder.encode(username), rol, permisos);
 
-            usuarioRepository.save(supervisor);
-            System.out.println("--> [DataInitializer] Usuario 'supervisor' creado exitosamente.");
-        } else {
-            System.out.println("--> [DataInitializer] El usuario 'supervisor' ya existe.");
-        }
-
-        // 3. Creación del Usuario normal
-        String userUsername = "user";
-        if (!usuarioRepository.existsByUsername(userUsername)) {
-            Usuario normalUser = Usuario.builder()
-                    .username(userUsername)
-                    .password(passwordEncoder.encode("user"))
-                    .rol(Rol.USER) 
-                    .puedeAnularCredito(false) 
-                    .puedeAnularCobranza(false)
-                    .build();
-
-            usuarioRepository.save(normalUser);
-            System.out.println("--> [DataInitializer] Usuario 'user' creado exitosamente.");
-        } else {
-            System.out.println("--> [DataInitializer] El usuario 'user' ya existe.");
-        }
+        usuarioRepository.save(usuario);
+        log.info("Usuario '{}' creado con rol {}", username, rol);
     }
 }

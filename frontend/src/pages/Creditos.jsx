@@ -11,7 +11,7 @@ export default function Creditos() {
   
   const [dni, setDni] = useState('');
   const [buscado, setBuscado] = useState(false);
-  const [form, setForm] = useState({ dniCliente:'', deudaOriginal:'', fecha:'', importeCuota:'', cantidadCuotas:'' });
+  const [form, setForm] = useState({ dniCliente:'', deudaOriginal:'', fecha:'', tasaInteres:'', cantidadCuotas:'' });
 
   const buscar = async (e) => {
     e.preventDefault();
@@ -25,12 +25,12 @@ export default function Creditos() {
     const payload = {
       ...form,
       deudaOriginal: Number(form.deudaOriginal),
-      importeCuota: Number(form.importeCuota),
+      tasaInteres: Number(form.tasaInteres),
       cantidadCuotas: Number(form.cantidadCuotas),
     };
     const result = await dispatch(addCredito(payload));
     if (result.meta.requestStatus === 'fulfilled') {
-      setForm({ dniCliente:'', deudaOriginal:'', fecha:'', importeCuota:'', cantidadCuotas:'' });
+      setForm({ dniCliente:'', deudaOriginal:'', fecha:'', tasaInteres:'', cantidadCuotas:'' });
       if (form.dniCliente === dni) dispatch(fetchCreditosPorCliente(dni));
     }
   };
@@ -72,7 +72,7 @@ export default function Creditos() {
           <input style={styles.input} placeholder="DNI cliente" value={form.dniCliente} onChange={e => setForm({...form, dniCliente: e.target.value})} required />
           <input style={styles.input} placeholder="Deuda original" value={form.deudaOriginal} onChange={e => setForm({...form, deudaOriginal: e.target.value})} type="number" required />
           <input style={styles.input} placeholder="Fecha" value={form.fecha} onChange={e => setForm({...form, fecha: e.target.value})} type="date" required />
-          <input style={styles.input} placeholder="Importe cuota" value={form.importeCuota} onChange={e => setForm({...form, importeCuota: e.target.value})} type="number" required />
+          <input style={styles.input} placeholder="Interés % (ej: 45)" value={form.tasaInteres} onChange={e => setForm({...form, tasaInteres: e.target.value})} type="number" min="0" step="0.01" required />
           <input style={styles.input} placeholder="Cant. cuotas" value={form.cantidadCuotas} onChange={e => setForm({...form, cantidadCuotas: e.target.value})} type="number" min="1" required />
           <button style={{...styles.btn, gridColumn:'span 2'}} disabled={loading}>
             {loading ? 'Guardando...' : 'Crear crédito'}
@@ -90,7 +90,7 @@ export default function Creditos() {
           {creditosSeguros.map(cr => (
             <div key={cr.id} style={{ ...styles.creditoBox, opacity: cr.anulado ? 0.6 : 1 }}>
               <p>
-                <strong>ID #{cr.id}</strong> — Deuda: ${cr.deudaOriginal} — {cr.cantidadCuotas} cuotas de ${cr.importeCuota}
+                <strong>ID #{cr.id}</strong> — Deuda: ${cr.deudaOriginal} + {cr.tasaInteres}% = ${cr.totalADevolver} — {cr.cantidadCuotas} cuotas de ${cr.importeCuota}
                 {cr.anulado && <span style={styles.badgeAnulado}> [ANULADO]</span>}
               </p>
               
@@ -111,8 +111,8 @@ export default function Creditos() {
                 </thead>
                 <tbody>
                   {(cr.cuotas || []).map(c => (
-                    <tr key={c.idCuota}>
-                      <td style={{padding: '5px 0'}}>{c.idCuota}</td>
+                    <tr key={c.numeroCuota}>
+                      <td style={{padding: '5px 0'}}>{c.numeroCuota}</td>
                       <td>{c.fechaVencimiento}</td>
                       <td style={{ color: c.pagada ? '#2e7d32' : '#c62828', fontWeight: 'bold' }}>
                         {c.pagada ? '✔ Pagada' : '✘ Pendiente'}

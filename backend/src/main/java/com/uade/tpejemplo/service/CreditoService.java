@@ -12,8 +12,6 @@ public interface CreditoService {
     CreditoResponse buscarPorId(Long id);
 
     List<CreditoResponse> listarPorCliente(String dniCliente);
-    
-    void eliminarCredito(Long id);
 
     void anularCredito(Long id);
 }

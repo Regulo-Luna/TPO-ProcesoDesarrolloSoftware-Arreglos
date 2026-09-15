@@ -29,8 +29,8 @@ public class CobranzaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> anularCobranza(@PathVariable Long id) {
-    cobranzaService.anularCobranza(id);
-    return ResponseEntity.ok(java.util.Map.of("mensaje", "Cobranza anulada exitosamente"));
-}
+    public ResponseEntity<Void> anularCobranza(@PathVariable Long id) {
+        cobranzaService.anularCobranza(id);
+        return ResponseEntity.noContent().build();
+    }
 }

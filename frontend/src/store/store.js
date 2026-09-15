@@ -4,7 +4,6 @@ import clientesReducer from './slices/clientesSlice';
 import creditosReducer from './slices/creditosSlice';
 import cobranzasReducer from './slices/cobranzasSlice';
 import dashboardReducer from './slices/dashboardSlice';
-import metasReducer from './slices/metaCobranzaSlice';
 import permisosReducer from './slices/permisosSlice';
 
 export const store = configureStore({
@@ -13,7 +12,6 @@ export const store = configureStore({
     clientes: clientesReducer,
     creditos: creditosReducer,
     dashboard: dashboardReducer,
-    metas: metasReducer,
     cobranzas: cobranzasReducer,
     permisos: permisosReducer
   },
